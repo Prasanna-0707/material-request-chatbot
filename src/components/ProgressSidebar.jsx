@@ -94,31 +94,158 @@ const ProgressSidebar = ({
     return 'Material Request'
   }
 
+  // =========================================
+  // REQUEST DATE
+  // =========================================
+
+  const getRequestDate = (request) => {
+    if (!request.submittedAt) {
+      return ''
+    }
+
+    return new Date(request.submittedAt).toLocaleDateString(
+      'en-US',
+      {
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric',
+      },
+    )
+  }
+
   return (
-    <aside className="sticky top-0 h-screen max-h-screen w-full overflow-y-auto border-r border-slate-200 bg-white md:w-60 md:max-w-60 md:shrink-0 lg:w-60 lg:max-w-60">
-      <div className="px-5 py-8">
+    <aside
+      className="
+        relative
+        flex
+        h-screen
+        w-full
+        shrink-0
+        flex-col
+        border-r
+        border-slate-200
+        bg-white
+        md:sticky
+        md:top-0
+        md:w-72
+        md:max-w-72
+      "
+    >
+
+      {/* ========================================= */}
+      {/* LOGO / BRAND */}
+      {/* ========================================= */}
+
+      <div
+        className="
+          shrink-0
+          border-b
+          border-slate-100
+          px-6
+          py-5
+        "
+      >
+        <div className="flex items-center gap-3">
+
+          {/* Logo */}
+          <div
+            className="
+              flex
+              h-10
+              w-10
+              shrink-0
+              items-center
+              justify-center
+              rounded-xl
+              bg-slate-900
+              text-sm
+              font-bold
+              text-white
+            "
+          >
+            M
+          </div>
+
+          {/* Brand Text */}
+          <div className="min-w-0">
+            <h1
+              className="
+                truncate
+                text-base
+                font-semibold
+                text-slate-900
+              "
+            >
+              Material Request
+            </h1>
+
+            <p
+              className="
+                truncate
+                text-xs
+                text-slate-500
+              "
+            >
+              Guided Request Assistant
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ========================================= */}
+      {/* SIDEBAR CONTENT */}
+      {/* ========================================= */}
+
+      <div
+        className="
+          min-h-0
+          flex-1
+          overflow-y-auto
+          px-4
+          py-8
+        "
+      >
 
         {/* ========================================= */}
         {/* YOUR JOURNEY */}
         {/* ========================================= */}
 
-        <div>
-          <div className="mb-5">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <section>
+
+          {/* Journey Heading */}
+          <div className="mb-6 px-2">
+            <p
+              className="
+                text-xs
+                font-semibold
+                uppercase
+                tracking-wider
+                text-slate-400
+              "
+            >
               Your Journey
             </p>
 
-            <h2 className="mt-1 text-base font-semibold text-slate-900 sm:text-lg">
+            <h2
+              className="
+                mt-1
+                text-base
+                font-semibold
+                text-slate-900
+              "
+            >
               Material Request
             </h2>
           </div>
 
           {/* ========================================= */}
-          {/* MOBILE / SMALL TABLET JOURNEY */}
+          {/* MOBILE JOURNEY */}
           {/* ========================================= */}
 
-          <div className="overflow-x-auto pb-2 md:hidden">
+          <div className="overflow-x-auto pb-3 md:hidden">
             <div className="flex min-w-max items-start gap-5">
+
               {steps.map((step, index) => {
                 const isCompleted = step.id < currentStep
                 const isCurrent = step.id === currentStep
@@ -127,11 +254,27 @@ const ProgressSidebar = ({
                 return (
                   <div
                     key={step.id}
-                    className="relative flex min-w-20 flex-col items-center"
+                    className="
+                      relative
+                      flex
+                      min-w-20
+                      flex-col
+                      items-center
+                    "
                   >
+
                     {/* Connector */}
                     {index < steps.length - 1 && (
-                      <div className="absolute left-1/2 top-4 h-px w-full bg-slate-200" />
+                      <div
+                        className="
+                          absolute
+                          left-1/2
+                          top-4
+                          h-px
+                          w-full
+                          bg-slate-200
+                        "
+                      />
                     )}
 
                     {/* Indicator */}
@@ -144,13 +287,28 @@ const ProgressSidebar = ({
                         }
                       }}
                       aria-label={`Go to ${step.title}`}
-                      className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-semibold transition ${
-                        isCompleted
-                          ? 'cursor-pointer border-slate-900 bg-slate-900 text-white hover:bg-slate-800'
-                          : isCurrent
-                            ? 'cursor-default border-slate-900 bg-white text-slate-900'
-                            : 'cursor-not-allowed border-slate-200 bg-white text-slate-400'
-                      }`}
+                      className={`
+                        relative
+                        z-10
+                        flex
+                        h-8
+                        w-8
+                        items-center
+                        justify-center
+                        rounded-full
+                        border-2
+                        text-xs
+                        font-semibold
+                        transition
+
+                        ${
+                          isCompleted
+                            ? 'cursor-pointer border-slate-900 bg-slate-900 text-white hover:bg-slate-800'
+                            : isCurrent
+                              ? 'cursor-default border-slate-900 bg-white text-slate-900'
+                              : 'cursor-not-allowed border-slate-200 bg-white text-slate-400'
+                        }
+                      `}
                     >
                       {isCompleted ? '✓' : step.id}
                     </button>
@@ -164,32 +322,51 @@ const ProgressSidebar = ({
                           onStepClick(step.id)
                         }
                       }}
-                      className={`mt-2 text-center text-xs font-semibold ${
-                        isClickable
-                          ? 'cursor-pointer text-slate-900 hover:text-slate-600'
-                          : isCurrent
-                            ? 'cursor-default text-slate-900'
-                            : 'cursor-not-allowed text-slate-400'
-                      }`}
+                      className={`
+                        mt-2
+                        text-center
+                        text-xs
+                        font-semibold
+
+                        ${
+                          isClickable
+                            ? 'cursor-pointer text-slate-900 hover:text-slate-600'
+                            : isCurrent
+                              ? 'cursor-default text-slate-900'
+                              : 'cursor-not-allowed text-slate-400'
+                        }
+                      `}
                     >
                       {step.title}
                     </button>
+
                   </div>
                 )
               })}
+
             </div>
           </div>
 
           {/* ========================================= */}
-          {/* DESKTOP / LAPTOP JOURNEY */}
+          {/* DESKTOP JOURNEY */}
           {/* ========================================= */}
 
           <div className="relative hidden md:block">
 
-            {/* Vertical line */}
-            <div className="absolute bottom-2 left-4 top-2 w-px bg-slate-200" />
+            {/* Vertical connector */}
+            <div
+              className="
+                absolute
+                bottom-5
+                left-4
+                top-5
+                w-px
+                bg-slate-200
+              "
+            />
 
-            <div className="space-y-4">
+            <div className="space-y-1">
+
               {steps.map((step) => {
                 const isCompleted = step.id < currentStep
                 const isCurrent = step.id === currentStep
@@ -198,8 +375,17 @@ const ProgressSidebar = ({
                 return (
                   <div
                     key={step.id}
-                    className="relative flex items-start gap-3"
+                    className="
+                      relative
+                      flex
+                      items-start
+                      gap-3
+                      rounded-xl
+                      px-2
+                      py-2.5
+                    "
                   >
+
                     {/* Indicator */}
                     <button
                       type="button"
@@ -210,19 +396,37 @@ const ProgressSidebar = ({
                         }
                       }}
                       aria-label={`Go to ${step.title}`}
-                      className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 text-xs font-semibold transition ${
-                        isCompleted
-                          ? 'cursor-pointer border-slate-900 bg-slate-900 text-white hover:bg-slate-800'
-                          : isCurrent
-                            ? 'cursor-default border-slate-900 bg-white text-slate-900'
-                            : 'cursor-not-allowed border-slate-200 bg-white text-slate-400'
-                      }`}
+                      className={`
+                        relative
+                        z-10
+                        flex
+                        h-8
+                        w-8
+                        shrink-0
+                        items-center
+                        justify-center
+                        rounded-full
+                        border-2
+                        bg-white
+                        text-xs
+                        font-semibold
+                        transition
+
+                        ${
+                          isCompleted
+                            ? 'cursor-pointer border-slate-900 bg-slate-900 text-white hover:bg-slate-800'
+                            : isCurrent
+                              ? 'cursor-default border-slate-900 text-slate-900'
+                              : 'cursor-not-allowed border-slate-200 text-slate-400'
+                        }
+                      `}
                     >
                       {isCompleted ? '✓' : step.id}
                     </button>
 
-                    {/* Content */}
+                    {/* Step Information */}
                     <div className="min-w-0 pt-0.5">
+
                       <button
                         type="button"
                         disabled={!isClickable}
@@ -238,33 +442,49 @@ const ProgressSidebar = ({
                         }`}
                       >
                         <p
-                          className={`text-sm font-semibold ${
-                            isCurrent || isCompleted
-                              ? 'text-slate-900'
-                              : 'text-slate-400'
-                          } ${
-                            isClickable
-                              ? 'transition-colors hover:text-slate-600'
-                              : ''
-                          }`}
+                          className={`
+                            text-sm
+                            font-semibold
+
+                            ${
+                              isCurrent || isCompleted
+                                ? 'text-slate-900'
+                                : 'text-slate-400'
+                            }
+
+                            ${
+                              isClickable
+                                ? 'transition-colors hover:text-slate-600'
+                                : ''
+                            }
+                          `}
                         >
                           {step.title}
                         </p>
 
                         <p
-                          className={`mt-0.5 text-xs leading-5 ${
-                            isCurrent
-                              ? 'text-slate-500'
-                              : 'text-slate-400'
-                          }`}
+                          className={`
+                            mt-0.5
+                            text-xs
+                            leading-5
+
+                            ${
+                              isCurrent
+                                ? 'text-slate-500'
+                                : 'text-slate-400'
+                            }
+                          `}
                         >
                           {step.description}
                         </p>
                       </button>
+
                     </div>
+
                   </div>
                 )
               })}
+
             </div>
           </div>
 
@@ -272,54 +492,154 @@ const ProgressSidebar = ({
           {/* PROGRESS */}
           {/* ========================================= */}
 
-          <div className="mt-6 border-t border-slate-200 pt-4">
-            <div className="mb-2 flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-500">
+          <div
+            className="
+              mt-6
+              border-t
+              border-slate-100
+              px-2
+              pt-5
+            "
+          >
+            <div
+              className="
+                mb-2
+                flex
+                items-center
+                justify-between
+              "
+            >
+              <span
+                className="
+                  text-xs
+                  font-medium
+                  text-slate-500
+                "
+              >
                 Progress
               </span>
 
-              <span className="text-xs font-semibold text-slate-700">
+              <span
+                className="
+                  text-xs
+                  font-semibold
+                  text-slate-700
+                "
+              >
                 {currentStep} / {steps.length}
               </span>
             </div>
 
-            <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
+            {/* Progress Bar */}
+            <div
+              className="
+                h-1.5
+                overflow-hidden
+                rounded-full
+                bg-slate-100
+              "
+            >
               <div
-                className="h-full rounded-full bg-slate-900 transition-all duration-500"
+                className="
+                  h-full
+                  rounded-full
+                  bg-slate-900
+                  transition-all
+                  duration-500
+                "
                 style={{
                   width: `${(currentStep / steps.length) * 100}%`,
                 }}
               />
             </div>
           </div>
-        </div>
+
+        </section>
 
         {/* ========================================= */}
         {/* RECENT CHATS */}
         {/* ========================================= */}
 
-        <div className="mt-8 border-t border-slate-200 pt-5">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Recent Chats
-          </p>
+        <section
+          className="
+            mt-7
+            border-t
+            border-slate-100
+            pt-5
+          "
+        >
+
+          {/* Recent Chats Heading */}
+          <div className="mb-3 px-2">
+            <p
+              className="
+                text-xs
+                font-semibold
+                uppercase
+                tracking-wider
+                text-slate-400
+              "
+            >
+              Recent Chats
+            </p>
+          </div>
+
+          {/* ========================================= */}
+          {/* RECENT CHAT SCROLL AREA */}
+          {/* ========================================= */}
 
           {recentChats.length > 0 ? (
-            <div className="space-y-1">
-              {recentChats.map((request) => (
-                <button
-                  key={request.id}
-                  type="button"
-                  className="flex w-full items-center rounded-lg px-2 py-2 text-left text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
-                >
-                  <span className="mr-2 shrink-0 text-slate-400">
-                    💬
-                  </span>
+            <div
+              className="
+                max-h-72
+                overflow-y-auto
+                pr-1
+              "
+            >
+              <div className="space-y-1">
 
-                  <span className="truncate">
-                    {getRequestTitle(request)}
-                  </span>
-                </button>
-              ))}
+                {recentChats.map((request) => (
+                  <button
+                    key={request.id}
+                    type="button"
+                    className="
+                      w-full
+                      rounded-xl
+                      px-3
+                      py-2.5
+                      text-left
+                      transition
+                      hover:bg-slate-50
+                    "
+                  >
+
+                    {/* Chat Title */}
+                    <p
+                      className="
+                        truncate
+                        text-sm
+                        font-medium
+                        text-slate-800
+                      "
+                    >
+                      {getRequestTitle(request)}
+                    </p>
+
+                    {/* Chat Date */}
+                    <p
+                      className="
+                        mt-0.5
+                        text-xs
+                        text-slate-400
+                      "
+                    >
+                      {getRequestDate(request)}
+                    </p>
+
+                  </button>
+                ))}
+
+              </div>
             </div>
           ) : (
             <div className="px-2 py-2">
@@ -328,7 +648,8 @@ const ProgressSidebar = ({
               </p>
             </div>
           )}
-        </div>
+
+        </section>
 
       </div>
     </aside>

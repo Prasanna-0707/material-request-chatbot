@@ -37,13 +37,11 @@ const StartRequest = ({ onStart }) => {
             </p>
 
             <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base">
-              Hi! I can help you create a new material request.
-              I&apos;ll ask you a few simple questions and use your
-              answers to prepare the required material information.
+              Need to create a material?
             </p>
 
             <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
-              When you&apos;re ready, click below to start.
+              I&apos;ll make it simple for you. Let&apos;s get started! 👋
             </p>
 
             <motion.button
