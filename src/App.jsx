@@ -8,6 +8,7 @@ import LanguageSelect from './components/LanguageSelect'
 import DistributionDetails from './components/DistributionDetails'
 import ReviewRequest from './components/ReviewRequest'
 import StartRequest from './components/StartRequest'
+// import RequestSummary from './components/RequestSummary'
 
 import {
   materialTypeOptions,
@@ -18,7 +19,6 @@ import { translateDescription } from './data/translation'
 
 function App() {
   const [currentStep, setCurrentStep] = useState(1)
-
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   // Step 2 — Material Type
@@ -47,7 +47,7 @@ function App() {
   // Translation
   const translatedDescription = translateDescription(
     description,
-    additionalLanguage
+    additionalLanguage,
   )
 
   // =========================================
@@ -58,8 +58,70 @@ function App() {
     setCurrentStep(2)
   }
 
+  // =========================================
+  // NEW REQUEST
+  // =========================================
+
+  const handleNewRequest = () => {
+    setCurrentStep(1)
+    setIsSubmitted(false)
+
+    setMaterialType('')
+    setBusinessTypes([])
+
+    setDescription('')
+    setAdditionalLanguage('')
+
+    setSelectedSalesOrganizations([])
+    setDistributionChain('')
+
+    setAdditionalInformation('')
+    setLoadingGroup('')
+    setPurchasingGroup('')
+  }
+
+  // =========================================
+  // SUBMIT REQUEST
+  // =========================================
+
   const handleSubmit = () => {
-  setIsSubmitted(true)
+    const submittedRequest = {
+      id: Date.now(),
+      materialType,
+      businessTypes,
+      description,
+      additionalLanguage,
+      translatedDescription,
+      selectedSalesOrganizations,
+      distributionChain,
+      additionalInformation,
+      loadingGroup,
+      purchasingGroup,
+      submittedAt: new Date().toISOString(),
+    }
+
+    // Get existing submitted requests
+    const existingRequests = JSON.parse(
+      localStorage.getItem('materialRequests') || '[]',
+    )
+
+    // Add latest request at the beginning
+    const updatedRequests = [
+      submittedRequest,
+      ...existingRequests,
+    ]
+
+    // Save submitted requests
+    localStorage.setItem(
+      'materialRequests',
+      JSON.stringify(updatedRequests),
+    )
+
+    // Show success screen
+    setIsSubmitted(true)
+
+    // Tell sidebar to refresh Recent Chats
+    window.dispatchEvent(new Event('materialRequestSubmitted'))
   }
 
   // =========================================
@@ -118,25 +180,53 @@ function App() {
       (selectedSalesOrganizations.length === 0 ||
         !distributionChain))
 
+  // =========================================
+  // CURRENT REQUEST SUMMARY
+  // =========================================
+
+  const showRequestSummary = currentStep >= 2
+
   return (
     <div className="min-h-screen bg-slate-50">
-      <Header />
+      <Header onNewRequest={handleNewRequest} />
 
-      <main className="mx-auto w-full max-w-screen-2xl px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 lg:px-10 xl:px-12">
-        <div className="flex flex-col gap-6 md:gap-8 lg:flex-row lg:items-start">
+      {/* Main Layout */}
+      <main className="w-full">
+        <div className="flex flex-col md:flex-row lg:items-start">
 
           {/* ========================================= */}
           {/* SIDEBAR */}
           {/* ========================================= */}
 
-          <ProgressSidebar currentStep={currentStep} />
+          <ProgressSidebar
+            currentStep={currentStep}
+            onStepClick={setCurrentStep}
+          />
 
           {/* ========================================= */}
           {/* MAIN CONTENT */}
           {/* ========================================= */}
 
-          <section className="min-w-0 flex-1">
+          <section className="min-w-0 flex-1 px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 lg:px-10 xl:px-12">
             <div className="mx-auto w-full max-w-4xl lg:mx-0">
+
+              {/* ========================================= */}
+              {/* CURRENT REQUEST SUMMARY */}
+              {/* ========================================= */}
+
+              {/* {showRequestSummary && !isSubmitted && (
+                <RequestSummary
+                  currentStep={currentStep}
+                  materialType={materialType}
+                  businessTypes={businessTypes}
+                  description={description}
+                  additionalLanguage={additionalLanguage}
+                  selectedSalesOrganizations={
+                    selectedSalesOrganizations
+                  }
+                  distributionChain={distributionChain}
+                />
+              )} */}
 
               {/* ========================================= */}
               {/* STEP 1 — START REQUEST */}
@@ -328,6 +418,7 @@ function App() {
               {/* ========================================= */}
               {/* STEP 6 — CR PREVIEW / REVIEW */}
               {/* ========================================= */}
+
               {currentStep === 6 && (
                 <>
                   {!isSubmitted ? (
@@ -342,7 +433,9 @@ function App() {
                           selectedSalesOrganizations
                         }
                         distributionChain={distributionChain}
-                        additionalInformation={additionalInformation}
+                        additionalInformation={
+                          additionalInformation
+                        }
                         loadingGroup={loadingGroup}
                         purchasingGroup={purchasingGroup}
                       />
@@ -378,6 +471,7 @@ function App() {
                       </div>
                     </div>
                   )}
+
                 </>
               )}
 

@@ -1,4 +1,4 @@
-const Header = () => {
+const Header = ({ onNewRequest }) => {
   return (
     <header className="border-b border-slate-200 bg-white">
       <div className="mx-auto flex min-h-16 w-full max-w-screen-2xl items-center justify-between gap-4 px-4 py-3 sm:px-6 md:px-8 lg:px-10 xl:px-12">
@@ -30,15 +30,19 @@ const Header = () => {
 
           <div className="hidden h-8 w-px bg-slate-200 sm:block" />
 
-          <div className="hidden text-right sm:block">
+          <button
+            type="button"
+            onClick={onNewRequest}
+            className="hidden text-right sm:block"
+          >
             <p className="text-xs text-slate-400">
               Request
             </p>
 
-            <p className="text-sm font-medium text-slate-700">
+            <p className="text-sm font-medium text-slate-700 transition-colors hover:text-slate-900">
               New Request
             </p>
-          </div>
+          </button>
         </div>
       </div>
     </header>
