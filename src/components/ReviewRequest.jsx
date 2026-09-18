@@ -38,8 +38,7 @@ const PreviewField = ({
 
   return (
     <div className="border-b border-slate-100 last:border-b-0">
-      <div className="grid gap-4 p-4 sm:grid-cols-[1.35fr_1.65fr_1.1fr_auto] sm:items-center sm:gap-5 sm:p-5">
-
+      <div className="grid gap-4 p-4 sm:grid-cols-[minmax(220px,1.35fr)_minmax(220px,1.65fr)_minmax(130px,1.1fr)_100px] sm:items-start sm:gap-5 sm:p-5">
         {/* =================================================
             CR FIELD
         ================================================= */}
@@ -145,7 +144,7 @@ const PreviewField = ({
             STATUS / EDIT BUTTON
         ================================================= */}
 
-        <div className="flex items-center">
+        <div className="flex min-h-11 items-start pt-1">
 
           {/* ===============================================
               BLOCKED
@@ -210,7 +209,7 @@ const SectionCard = ({
 
       {/* DESKTOP COLUMN HEADERS */}
 
-      <div className="hidden border-b border-slate-200 bg-white sm:grid sm:grid-cols-[1.35fr_1.65fr_1.1fr_auto] sm:gap-5 sm:px-5 sm:py-3">
+      <div className="hidden border-b border-slate-200 bg-white sm:grid sm:grid-cols-[minmax(220px,1.35fr)_minmax(220px,1.65fr)_minmax(130px,1.1fr)_100px] sm:gap-5 sm:px-5 sm:py-3">
 
         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
           CR Field
