@@ -4,31 +4,46 @@ const steps = [
   {
     id: 1,
     title: 'Start',
-    description: 'Request details',
+    description: 'Start request',
   },
   {
     id: 2,
-    title: 'Material',
-    description: 'Material type',
+    title: 'Request Setup',
+    description: 'Request details',
   },
   {
     id: 3,
-    title: 'Business',
-    description: 'Business type',
+    title: 'Material Type',
+    description: 'Material type',
   },
   {
     id: 4,
-    title: 'Details',
-    description: 'Material information',
+    title: 'Business',
+    description: 'Business type & division',
   },
   {
     id: 5,
+    title: 'Material Details',
+    description: 'Material information',
+  },
+  {
+    id: 6,
     title: 'Distribution',
     description: 'Sales & plant',
   },
   {
-    id: 6,
-    title: 'Review',
+    id: 7,
+    title: 'Valuation',
+    description: 'Valuation class',
+  },
+  {
+    id: 8,
+    title: 'Validation',
+    description: 'Validation & evaluation',
+  },
+  {
+    id: 9,
+    title: 'CR Preview',
     description: 'Check your request',
   },
 ]
@@ -51,16 +66,18 @@ const ProgressSidebar = ({
 
       setRecentChats(savedRequests)
     } catch (error) {
-      console.error('Failed to load recent requests:', error)
+      console.error(
+        'Failed to load recent requests:',
+        error,
+      )
+
       setRecentChats([])
     }
   }
 
   useEffect(() => {
-    // Load submitted requests when sidebar mounts
     loadRecentChats()
 
-    // Refresh when a new request is submitted
     const handleRequestSubmitted = () => {
       loadRecentChats()
     }
@@ -95,12 +112,12 @@ const ProgressSidebar = ({
   }
 
   return (
-    <aside className="sticky top-0 h-screen max-h-screen w-full overflow-y-auto border-r border-slate-200 bg-white md:w-60 md:max-w-60 md:shrink-0 lg:w-60 lg:max-w-60">
+    <aside className="sticky top-0 h-screen max-h-screen w-full overflow-y-auto border-r border-slate-200 bg-white md:w-60 md:max-w-60 md:shrink-0 lg:w-64 lg:max-w-64">
       <div className="px-5 py-8">
 
-        {/* ========================================= */}
-        {/* YOUR JOURNEY */}
-        {/* ========================================= */}
+        {/* =========================================
+            YOUR JOURNEY
+        ========================================= */}
 
         <div>
           <div className="mb-5">
@@ -113,36 +130,43 @@ const ProgressSidebar = ({
             </h2>
           </div>
 
-          {/* ========================================= */}
-          {/* MOBILE / SMALL TABLET JOURNEY */}
-          {/* ========================================= */}
+          {/* =========================================
+              MOBILE
+          ========================================= */}
 
           <div className="overflow-x-auto pb-2 md:hidden">
             <div className="flex min-w-max items-start gap-5">
 
               {steps.map((step, index) => {
-                const isCompleted = step.id < currentStep
-                const isCurrent = step.id === currentStep
-                const isClickable = isCompleted
+                const isCompleted =
+                  step.id < currentStep
+
+                const isCurrent =
+                  step.id === currentStep
+
+                const isClickable =
+                  isCompleted
 
                 return (
                   <div
                     key={step.id}
-                    className="relative flex min-w-20 flex-col items-center"
+                    className="relative flex min-w-24 flex-col items-center"
                   >
 
-                    {/* Connector */}
+                    {/* CONNECTOR */}
+
                     {index < steps.length - 1 && (
                       <div className="absolute left-1/2 top-4 h-px w-full bg-slate-200" />
                     )}
 
-                    {/* Indicator */}
+                    {/* INDICATOR */}
+
                     <button
                       type="button"
                       disabled={!isClickable}
                       onClick={() => {
                         if (isClickable) {
-                          onStepClick(step.id)
+                          onStepClick?.(step.id)
                         }
                       }}
                       aria-label={`Go to ${step.title}`}
@@ -154,16 +178,19 @@ const ProgressSidebar = ({
                             : 'cursor-not-allowed border-slate-200 bg-white text-slate-400'
                       }`}
                     >
-                      {isCompleted ? '✓' : step.id}
+                      {isCompleted
+                        ? '✓'
+                        : step.id}
                     </button>
 
-                    {/* Title */}
+                    {/* TITLE */}
+
                     <button
                       type="button"
                       disabled={!isClickable}
                       onClick={() => {
                         if (isClickable) {
-                          onStepClick(step.id)
+                          onStepClick?.(step.id)
                         }
                       }}
                       className={`mt-2 text-center text-xs font-semibold ${
@@ -184,21 +211,25 @@ const ProgressSidebar = ({
             </div>
           </div>
 
-          {/* ========================================= */}
-          {/* DESKTOP / LAPTOP JOURNEY */}
-          {/* ========================================= */}
+          {/* =========================================
+              DESKTOP
+          ========================================= */}
 
           <div className="relative hidden md:block">
 
-            {/* Vertical line */}
             <div className="absolute bottom-2 left-4 top-2 w-px bg-slate-200" />
 
             <div className="space-y-4">
 
               {steps.map((step) => {
-                const isCompleted = step.id < currentStep
-                const isCurrent = step.id === currentStep
-                const isClickable = isCompleted
+                const isCompleted =
+                  step.id < currentStep
+
+                const isCurrent =
+                  step.id === currentStep
+
+                const isClickable =
+                  isCompleted
 
                 return (
                   <div
@@ -206,13 +237,14 @@ const ProgressSidebar = ({
                     className="relative flex items-start gap-3"
                   >
 
-                    {/* Indicator */}
+                    {/* INDICATOR */}
+
                     <button
                       type="button"
                       disabled={!isClickable}
                       onClick={() => {
                         if (isClickable) {
-                          onStepClick(step.id)
+                          onStepClick?.(step.id)
                         }
                       }}
                       aria-label={`Go to ${step.title}`}
@@ -224,10 +256,13 @@ const ProgressSidebar = ({
                             : 'cursor-not-allowed border-slate-200 bg-white text-slate-400'
                       }`}
                     >
-                      {isCompleted ? '✓' : step.id}
+                      {isCompleted
+                        ? '✓'
+                        : step.id}
                     </button>
 
-                    {/* Content */}
+                    {/* CONTENT */}
+
                     <div className="min-w-0 pt-0.5">
 
                       <button
@@ -235,7 +270,7 @@ const ProgressSidebar = ({
                         disabled={!isClickable}
                         onClick={() => {
                           if (isClickable) {
-                            onStepClick(step.id)
+                            onStepClick?.(step.id)
                           }
                         }}
                         className={`text-left ${
@@ -246,7 +281,8 @@ const ProgressSidebar = ({
                       >
                         <p
                           className={`text-sm font-semibold ${
-                            isCurrent || isCompleted
+                            isCurrent ||
+                            isCompleted
                               ? 'text-slate-900'
                               : 'text-slate-400'
                           } ${
@@ -278,11 +314,12 @@ const ProgressSidebar = ({
             </div>
           </div>
 
-          {/* ========================================= */}
-          {/* PROGRESS */}
-          {/* ========================================= */}
+          {/* =========================================
+              PROGRESS
+          ========================================= */}
 
           <div className="mt-6 border-t border-slate-200 pt-4">
+
             <div className="mb-2 flex items-center justify-between">
 
               <span className="text-xs font-medium text-slate-500">
@@ -296,20 +333,26 @@ const ProgressSidebar = ({
             </div>
 
             <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
+
               <div
                 className="h-full rounded-full bg-slate-900 transition-all duration-500"
                 style={{
-                  width: `${(currentStep / steps.length) * 100}%`,
+                  width: `${Math.min(
+                    (currentStep / steps.length) *
+                      100,
+                    100,
+                  )}%`,
                 }}
               />
+
             </div>
           </div>
 
         </div>
 
-        {/* ========================================= */}
-        {/* RECENT CHATS */}
-        {/* ========================================= */}
+        {/* =========================================
+            RECENT CHATS
+        ========================================= */}
 
         <div className="mt-8 border-t border-slate-200 pt-5">
 
@@ -341,9 +384,11 @@ const ProgressSidebar = ({
             </div>
           ) : (
             <div className="px-2 py-2">
+
               <p className="text-xs leading-5 text-slate-400">
                 No submitted requests yet.
               </p>
+
             </div>
           )}
 
